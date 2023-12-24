@@ -69,8 +69,6 @@
                     <tbody id="mainbody">
 
                     @foreach($student->result as  $key => $result)
-
-
                         <tr>
                             <td>
                                 <input  class="achieve_number form-control" value="{{$result->id}}" type="hidden" name="addmore[{{ $key }}][result_id]" id="result_id" >

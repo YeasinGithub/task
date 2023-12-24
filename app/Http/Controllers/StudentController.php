@@ -41,7 +41,6 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
         ],[
@@ -88,17 +87,6 @@ class StudentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show($student)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Student  $student
@@ -106,7 +94,6 @@ class StudentController extends Controller
      */
     public function edit($studentId)
     {
-
         $data['subjects']=Subject::get();
         $data['student']=Student::with(['result'])->find($studentId);
         return view('student.edit', $data);
@@ -121,7 +108,6 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-
 
         $request->validate([
             'name' => 'required',
@@ -156,7 +142,10 @@ class StudentController extends Controller
             if (isset($item['result_id'])) {
                 $sResult=StudentResult::find($item['result_id']);
             }
-            else { $sResult= new StudentResult(); }
+            else { 
+                $sResult= new StudentResult();
+                 
+            }
             $sResult->student_id=$student->id;
             $sResult->subject_id = $item['subject_id'];
             $sResult->achieve_number = $item['achieve_number'];
@@ -181,15 +170,11 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student=Student::find($id);
-
-        if ($student){
+      $student=  Student::find($id);
+        if ($student->image!='img/student/blank.jpg' &&  File::exists(public_path($student->image))) {
+                File::delete(public_path($student->image));
+            }
             $student->delete();
-            StudentResult::where('student_id', $id)->delete();
-            File::delete(public_path($student->image));
-
-            session()->flash('success', 'Student Deleted successfully');
-            return redirect()->route('students.index');
-        }
+        StudentResult::where('student_id', $id)->delete();
     }
 }

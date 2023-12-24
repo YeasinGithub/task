@@ -28,8 +28,7 @@ class DataSeed extends Seeder
       User::create(['email' => 'admin@admin.com', 'name'=>'Admin', 'password' => Hash::make('password')]);
 
       Subject::create(['subject_name' => 'Bangla']);
-        Subject::create(['subject_name' => 'English']);
-
+      Subject::create(['subject_name' => 'English']);
 
 
 
